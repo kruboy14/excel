@@ -1,12 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="favicon.ico">
-  <title>Excel</title>
-</head>
-<body>
-  <div id="app" class="container"></div>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="favicon.ico" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <title>Excel</title>
+  </head>
+  <body>
+    <div id="app" class="container">
+      <div class="excel">
+        <div class="excel__header">
+          <input type="text" class="input" value="New table" />
+
+          <div>
+            <div class="excel__header__buttons">
+              <span class="material-icons"> delete </span>
+              <span class="material-icons"> exit_to_app </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="excel__toolbar"></div>
+
+        <div class="excel__formula"></div>
+
+        <div class="excel__table"></div>
+      </div>
+    </div>
+  </body>
 </html>
