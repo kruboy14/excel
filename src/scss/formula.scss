@@ -2,6 +2,7 @@
 @import "./mixins";
 
 .excel__formula {
+  z-index: 2;
   position: fixed;
   left: 0;
   right: 0;
@@ -9,6 +10,7 @@
   height: $formula-height;
   display: flex;
   align-items: center;
+  background-color: #fff;
   border-bottom: 1px solid $border-color;
 
   & .formula__info {

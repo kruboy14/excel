@@ -2,6 +2,7 @@
 @import "./mixins";
 
 .excel__toolbar {
+  z-index: 2;
   position: fixed;
   height: $toolbar-height;
   left: 0;
@@ -10,6 +11,7 @@
   border-top: 1px solid $border-color;
   border-bottom: 1px solid $border-color;
   padding: 10px;
+  background-color: #fff;
   display: flex;
   .excel__header__buttons {
     @include button(green);
