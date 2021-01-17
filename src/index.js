@@ -5,10 +5,12 @@ import { Table } from "./components/table/Table";
 import { Toolbar } from "./components/toolbar/Toolbar";
 import "./scss/index.scss";
 
-
 const excel = new Excel("#app", {
   components: [Header, Toolbar, Formula, Table],
 });
 
-excel.render()
+excel.render();
 
+// setTimeout(() => {
+//   excel.removeEvents();
+// }, 1000);

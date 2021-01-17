@@ -16,11 +16,15 @@ export class Excel {
       return component;
     });
     return $root;
+    
   }
 
   render() {
     this.$el.append(this.getRoot());
 
     this.components.forEach((comp) => comp.init());
+  }
+  removeEvents() {
+    this.components.forEach((comp) => comp.destroy());
   }
 }
