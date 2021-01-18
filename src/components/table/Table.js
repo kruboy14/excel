@@ -27,7 +27,7 @@ export class Table extends ExcelComponent {
 
       $resizer.css({
         opacity: 1,
-        [sideProp]: "-5000px",
+        [sideProp]: "-2000px",
       });
 
       document.onmousemove = (e) => {
