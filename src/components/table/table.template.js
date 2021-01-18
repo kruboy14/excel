@@ -3,22 +3,29 @@ const CODES = {
   Z: 90,
 };
 
-function toCell() {
+function toCell(_, i) {
   return `
-  <div class="excel__table__cell" contenteditable></div>
+  <div class="excel__table__cell" contenteditable data-col="${i}"></div>
   `;
 }
 
-function toColumn(e) {
+function toColumn(e, i) {
   return `
-  <div class="excel__table__column">${e}</div>
+  <div class="excel__table__column" data-type="resizable" >
+  ${e}
+  <div class="col-resize" data-resize="col" data-col="${i}"></div>
+  </div>
   `;
 }
 
 function createRow(content, index) {
+  const resize = index ? `<div class="row-resize" data-resize="row"></div>` : "";
   return `
-  <div class="excel__table__row">
-    <div class="excel__table__info">${index ? index : ""}</div>
+  <div class="excel__table__row" data-type="resizable">
+    <div class="excel__table__info">
+    ${index ? index : ""}
+    ${resize}
+    </div>
     <div class="excel__table__data">${content}</div>
   </div>`;
 }
@@ -36,8 +43,9 @@ export function createTable(rowsCount = 20) {
   rows.push(createRow(cols));
 
   for (let i = 0; i < rowsCount; i++) {
-    console.log(cells);
     rows.push(createRow(cells, i + 1));
   }
   return rows.join("");
 }
+
+
