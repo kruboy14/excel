@@ -19,6 +19,7 @@ class Dom {
     return this;
   }
 
+
   append(node) {
     if (node instanceof Dom) {
       node = node.$el;
@@ -60,6 +61,11 @@ class Dom {
       };
     }
     return this.data.id;
+  }
+
+  focus(){
+    this.$el.focus()
+    return this;
   }
 
   findAll(selector) {
