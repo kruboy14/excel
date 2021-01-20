@@ -11,7 +11,7 @@ export class Table extends ExcelComponent {
   constructor($root, options) {
     super($root, {
       name: "Table",
-      listeners: ["mousedown", "keydown"],
+      listeners: ["mousedown", "keydown", "input"],
       ...options,
     });
   }
@@ -28,18 +28,22 @@ export class Table extends ExcelComponent {
     super.init();
 
     const $cell = this.$root.find(`[data-id="0:0"]`);
-    this.selection.select($cell);
+    this.selectCell($cell);
 
-    this.$on("formula:input", (text) => this.selection.current.text(text));
-
-    this.$on("formula:enter", (text, cell) => {
+    this.$on("formula:input", (text) => {
       this.selection.current.text(text);
-      this.selection.select(cell);
+    });
+    this.$on("formula:enter", () => {
+      this.selection.current.focus();
     });
   }
 
+  selectCell($cell) {
+    this.selection.select($cell);
+    this.$emit("table:select", $cell);
+  }
+
   onMousedown(event) {
-    console.log(event);
     if (resizeChecker(event)) {
       tableResize(this.$root, event);
     } else if (isCell(event)) {
@@ -51,7 +55,7 @@ export class Table extends ExcelComponent {
         this.selection.selectGroup($cells);
       } else {
         this.selection.select($target);
-        this.$emit("table:selected", $target);
+        this.$emit("table:select", $target);
       }
     }
   }
@@ -70,8 +74,12 @@ export class Table extends ExcelComponent {
       event.preventDefault();
       const { col, row } = this.selection.current.id(true);
       const $next = this.$root.find(nextSelector(key, col, row));
-      this.selection.select($next);
-      this.$emit("table:selected", $next);
+      this.selectCell($next);
+
     }
+  }
+
+  onInput(event) {
+    this.$emit("table:input", $(event.target));
   }
 }

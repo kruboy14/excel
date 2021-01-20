@@ -1,3 +1,4 @@
+import { $ } from "../../core/dom";
 import { ExcelComponent } from "../../core/ExcelComponent";
 
 export class Formula extends ExcelComponent {
@@ -9,38 +10,36 @@ export class Formula extends ExcelComponent {
       listeners: ["input", "keydown"],
       ...options,
     });
-
-    this.curCell = {};
   }
 
   toHTML() {
     return `
     <div class="formula__info">fx</div>
 
-    <div class="formula__input" contenteditable spellcheck="false"></div>`;
+    <div class="formula__input" id="formula" contenteditable spellcheck="false"></div>`;
   }
 
   init() {
     super.init();
-    this.$on("table:selected", ($next) => {
-      this.curCell = $next
-      console.log($next);
+    this.$formula = this.$root.find("#formula");
+    this.$on("table:select", ($cell) => {
+      this.$formula.text($cell.text());
+    });
+
+    this.$on("table:input", ($cell) => {
+      this.$formula.text($cell.text());
     });
   }
 
   onInput(event) {
-    const text = event.target.textContent.trim();
-    this.$emit("formula:input", text);
+    this.$emit("formula:input", $(event.target).text());
   }
 
   onKeydown(event) {
-    const { key } = event;
-    if (key === "Enter" && !event.shiftKey) {
+    const keys = ["Enter", "Tab"]
+    if (keys.includes(event.key)) {
       event.preventDefault();
-      console.log("Enter from form");
-      const text = event.target.textContent.trim();
-      const val = this.curCell
-      this.$emit("formula:enter", text, val);
+      this.$emit("formula:enter");
     }
   }
 }
