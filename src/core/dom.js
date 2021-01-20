@@ -15,14 +15,17 @@ class Dom {
   }
 
   text(text) {
-    this.$el.textContent = text;
+    if (typeof text === "string") {
+      this.$el.textContent = text;
+      return this;
+    }
+    return this.$el.textContent.trim();
   }
 
   clear() {
     this.html("");
     return this;
   }
-
 
   append(node) {
     if (node instanceof Dom) {
@@ -67,8 +70,8 @@ class Dom {
     return this.data.id;
   }
 
-  focus(){
-    this.$el.focus()
+  focus() {
+    this.$el.focus();
     return this;
   }
 

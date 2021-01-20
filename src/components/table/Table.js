@@ -32,7 +32,10 @@ export class Table extends ExcelComponent {
 
     this.$on("formula:input", (text) => this.selection.current.text(text));
 
-   
+    this.$on("formula:enter", (text, cell) => {
+      this.selection.current.text(text);
+      this.selection.select(cell);
+    });
   }
 
   onMousedown(event) {
@@ -47,8 +50,8 @@ export class Table extends ExcelComponent {
         );
         this.selection.selectGroup($cells);
       } else {
-        
         this.selection.select($target);
+        this.$emit("table:selected", $target);
       }
     }
   }
@@ -68,7 +71,7 @@ export class Table extends ExcelComponent {
       const { col, row } = this.selection.current.id(true);
       const $next = this.$root.find(nextSelector(key, col, row));
       this.selection.select($next);
-
+      this.$emit("table:selected", $next);
     }
   }
 }

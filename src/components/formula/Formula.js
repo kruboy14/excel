@@ -10,6 +10,7 @@ export class Formula extends ExcelComponent {
       ...options,
     });
 
+    this.curCell = {};
   }
 
   toHTML() {
@@ -19,12 +20,27 @@ export class Formula extends ExcelComponent {
     <div class="formula__input" contenteditable spellcheck="false"></div>`;
   }
 
-
+  init() {
+    super.init();
+    this.$on("table:selected", ($next) => {
+      this.curCell = $next
+      console.log($next);
+    });
+  }
 
   onInput(event) {
     const text = event.target.textContent.trim();
     this.$emit("formula:input", text);
   }
 
-  
+  onKeydown(event) {
+    const { key } = event;
+    if (key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      console.log("Enter from form");
+      const text = event.target.textContent.trim();
+      const val = this.curCell
+      this.$emit("formula:enter", text, val);
+    }
+  }
 }
