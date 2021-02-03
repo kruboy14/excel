@@ -36,6 +36,7 @@ export class Table extends ExcelComponent {
     this.$on("formula:enter", () => {
       this.selection.current.focus();
     });
+    this.$subscribe((state) => console.log("state", state));
   }
 
   selectCell($cell) {
@@ -54,8 +55,7 @@ export class Table extends ExcelComponent {
         );
         this.selection.selectGroup($cells);
       } else {
-        this.selection.select($target);
-        this.$emit("table:select", $target);
+        this.selectCell($target);
       }
     }
   }
@@ -75,7 +75,6 @@ export class Table extends ExcelComponent {
       const { col, row } = this.selection.current.id(true);
       const $next = this.$root.find(nextSelector(key, col, row));
       this.selectCell($next);
-
     }
   }
 

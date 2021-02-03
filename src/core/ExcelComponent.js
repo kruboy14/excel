@@ -7,6 +7,7 @@ export class ExcelComponent extends DomListener {
     this.emitter = options.emitter;
     this.store = options.store;
     this.unsubcribers = [];
+    this.storeSub = null;
 
     this.prepare();
   }
@@ -31,7 +32,7 @@ export class ExcelComponent extends DomListener {
   }
 
   $subscribe(fn) {
-    this.store.subscribe(fn);
+    this.storeSub = this.store.subscribe(fn);
   }
 
   init() {
@@ -40,5 +41,6 @@ export class ExcelComponent extends DomListener {
   destroy() {
     this.removeDOMListener();
     this.unsubcribers.forEach((unsub) => unsub());
+    this.storeSub.unsubcribe()
   }
 }
