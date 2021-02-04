@@ -4,7 +4,7 @@ import { isCell, matrix, nextSelector, resizeChecker } from "./table.functions";
 import { tableResize } from "./table.resize";
 import { createTable } from "./table.template";
 import { TableSelection } from "./TableSelection";
-import * as action from "../../redux/action"
+import * as action from "../../redux/action";
 
 export class Table extends ExcelComponent {
   static className = "excel__table";
@@ -44,12 +44,12 @@ export class Table extends ExcelComponent {
   }
 
   async resizeTable(event) {
-    try {      
+    try {
       const data = await tableResize(this.$root, event);
-      if(event.target.dataset.resize === "col") {
+      if (event.target.dataset.resize === "col") {
         this.$dispatch(action.tableResizerCOL(data));
-      } else if(event.target.dataset.resize === "row") {
-        this.$dispatch(action.tableResizerROW(data))
+      } else if (event.target.dataset.resize === "row") {
+        this.$dispatch(action.tableResizerROW(data));
       }
     } catch (error) {
       console.warn("resize error", error);
@@ -91,6 +91,12 @@ export class Table extends ExcelComponent {
   }
 
   onInput(event) {
-    this.$emit("table:input", $(event.target));
+    // this.$emit("table:input", $(event.target));
+    this.$dispatch(
+      action.changeText({
+        value: $(event.target).text(),
+        id: this.selection.current.id()
+      })
+    );
   }
 }

@@ -26,10 +26,14 @@ export class Formula extends ExcelComponent {
       this.$formula.text($cell.text());
     });
 
-    this.$on("table:input", ($cell) => {
-      this.$formula.text($cell.text());
-    });
+    // this.$on("table:input", ($cell) => {
+    //   this.$formula.text($cell.text());
+    // });
 
+    this.$subscribe((state) => {
+      console.log("Formula upd", state.currentText);
+      this.$formula.text(state.currentText);
+    });
   }
 
   onInput(event) {
@@ -37,7 +41,7 @@ export class Formula extends ExcelComponent {
   }
 
   onKeydown(event) {
-    const keys = ["Enter", "Tab"]
+    const keys = ["Enter", "Tab"];
     if (keys.includes(event.key)) {
       event.preventDefault();
       this.$emit("formula:enter");
