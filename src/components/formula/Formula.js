@@ -30,7 +30,6 @@ export class Formula extends ExcelComponent {
       this.$formula.text($cell.text());
     });
 
-    this.$subscribe((state) => console.log("state formula", state))
   }
 
   onInput(event) {

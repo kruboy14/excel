@@ -3,7 +3,6 @@ const CODES = {
   Z: 90,
 };
 
-
 function toCell(row) {
   return function (_, col) {
     return `
@@ -12,11 +11,11 @@ function toCell(row) {
   };
 }
 
-function toColumn(e, i) {
+function toColumn({value, index, width}) {
   return `
-  <div class="excel__table__column" data-type="resizable"  data-col="${i}">
-  ${e}
-  <div class="col-resize" data-resize="col" data-col="${i}"></div>
+  <div class="excel__table__column" data-type="resizable"  data-col="${index}" style="width: ${width}">
+  ${value}
+  <div class="col-resize" data-resize="col" data-col="${index}" ></div>
   </div>
   `;
 }
@@ -39,10 +38,26 @@ function toChar(_, i) {
   return String.fromCharCode(CODES.A + i);
 }
 
-export function createTable(rowsCount = 20) {
+function getWidth(state, index) {
+  return state[index] || 120;
+}
+
+export function createTable(rowsCount = 20, state = {}) {
   const colsCount = CODES.Z - CODES.A + 1;
   const rows = [];
-  const cols = new Array(colsCount).fill("").map(toChar).map(toColumn).join("");
+  const cols = new Array(colsCount)
+    .fill("")
+    .map(toChar)
+    .map((value, index) => {
+      const width = getWidth(state.colState, index) + "px";
+      return {
+        value,
+        index,
+        width,
+      };
+    })
+    .map(toColumn)
+    .join("");
 
   rows.push(createRow(cols));
 

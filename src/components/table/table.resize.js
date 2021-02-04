@@ -32,6 +32,9 @@ export function tableResize($root, event) {
     };
 
     document.onmouseup = () => {
+      if(value < 40) { 
+        value = 40
+      }
       if (type === "col") {
         $root
           .findAll(`[data-col="${$resizer.data.col}"]`)
