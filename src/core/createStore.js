@@ -1,5 +1,5 @@
 export function createStore(rootReducer, initialState = {}) {
-  let state = rootReducer({...initialState}, {type: "__INIT__"});
+  let state = rootReducer({ ...initialState }, { type: "__INIT__" });
   let listeners = [];
 
   return {
@@ -12,30 +12,14 @@ export function createStore(rootReducer, initialState = {}) {
       };
     },
     dispatch(action) {
-      state = rootReducer(state, action)
-      listeners.forEach(listener => listener(state))     
+      state = rootReducer(state, action);
+      listeners.forEach((listener) => listener(state));
     },
     getState() {
-      return state;
+      return JSON.parse(JSON.stringify(state));
     },
   };
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /* class Store {
   constructor(rootReducer, initialState = {}) {

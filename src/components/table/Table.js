@@ -32,6 +32,7 @@ export class Table extends ExcelComponent {
 
     this.$on("formula:input", (text) => {
       this.selection.current.text(text);
+      this.updateTextStore(text);
     });
     this.$on("formula:enter", () => {
       this.selection.current.focus();
@@ -90,13 +91,16 @@ export class Table extends ExcelComponent {
     }
   }
 
-  onInput(event) {
-    // this.$emit("table:input", $(event.target));
+  updateTextStore(value) {
     this.$dispatch(
       action.changeText({
-        value: $(event.target).text(),
-        id: this.selection.current.id()
+        value,
+        id: this.selection.current.id(),
       })
     );
+  }
+
+  onInput(event) {
+    this.updateTextStore($(event.target).text());
   }
 }
