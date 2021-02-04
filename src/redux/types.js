@@ -1,1 +1,2 @@
-export const TABLE_RESIZE = "TABLE_RESIZE"
+export const TABLE_RESIZE_COL = "TABLE_RESIZE_COL"
+export const TABLE_RESIZE_ROW = "TABLE_RESIZE_ROW"

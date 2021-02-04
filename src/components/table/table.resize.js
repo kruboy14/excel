@@ -32,10 +32,11 @@ export function tableResize($root, event) {
     };
 
     document.onmouseup = () => {
-      if(value < 40) { 
-        value = 40
-      }
+     
       if (type === "col") {
+        if(value < 40) { 
+          value = 40
+        }
         $root
           .findAll(`[data-col="${$resizer.data.col}"]`)
           .forEach((elem) => (elem.style.width = value + "px"));
@@ -47,8 +48,16 @@ export function tableResize($root, event) {
           id: $parent.data.col,
         });
       } else if (type === "row") {
+        if(value < 24) { 
+          value = 24
+        }
         $parent.css({
           height: value + "px",
+        });
+        console.log($parent.data);
+        resolve({
+          value,
+          id: $parent.data.row,
         });
       }
 

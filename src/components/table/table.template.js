@@ -3,15 +3,22 @@ const CODES = {
   Z: 90,
 };
 
-function toCell(row) {
+const DEFAULT_WIDTH = 120;
+const DEFAULT_HEIGHT = 24;
+
+
+function toCell(state, row) {
   return function (_, col) {
     return `
-      <div class="excel__table__cell" contenteditable data-col="${col}" data-type="cell" data-id="${row}:${col}"></div>
+      <div class="excel__table__cell" contenteditable data-col="${col}" data-type="cell" data-id="${row}:${col}" style="width: ${getWidth(
+      state.colState,
+      col
+    )}"></div>
   `;
   };
 }
 
-function toColumn({value, index, width}) {
+function toColumn({ value, index, width }) {
   return `
   <div class="excel__table__column" data-type="resizable"  data-col="${index}" style="width: ${width}">
   ${value}
@@ -20,13 +27,13 @@ function toColumn({value, index, width}) {
   `;
 }
 
-function createRow(content, index) {
+function createRow(content, index, height) {
   const resize = index
     ? `<div class="row-resize" data-resize="row"></div>`
     : "";
   return `
-  <div class="excel__table__row" data-type="resizable">
-    <div class="excel__table__info">
+  <div class="excel__table__row" data-type="resizable" data-row="${index}" style="height: ${height}">
+    <div class="excel__table__info" >
     ${index ? index : ""}
     ${resize}
     </div>
@@ -38,8 +45,22 @@ function toChar(_, i) {
   return String.fromCharCode(CODES.A + i);
 }
 
-function getWidth(state, index) {
-  return state[index] || 120;
+function getWidth(state = {}, index) {
+  return (state[index] || DEFAULT_WIDTH) + "px";
+}
+function getHeight(state = {}, index) {
+  return (state[index] || DEFAULT_HEIGHT) + "px";
+}
+
+function widthAdder(state) {
+  return function (value, index) {
+    const width = getWidth(state.colState, index) 
+    return {
+      value,
+      index,
+      width,
+    };
+  };
 }
 
 export function createTable(rowsCount = 20, state = {}) {
@@ -48,22 +69,17 @@ export function createTable(rowsCount = 20, state = {}) {
   const cols = new Array(colsCount)
     .fill("")
     .map(toChar)
-    .map((value, index) => {
-      const width = getWidth(state.colState, index) + "px";
-      return {
-        value,
-        index,
-        width,
-      };
-    })
+    .map(widthAdder(state))
     .map(toColumn)
     .join("");
 
-  rows.push(createRow(cols));
+    
+  rows.push(createRow(cols, undefined));
 
   for (let i = 0; i < rowsCount; i++) {
-    const cells = new Array(colsCount).fill("").map(toCell(i)).join("");
-    rows.push(createRow(cells, i + 1));
+    const cells = new Array(colsCount).fill("").map(toCell(state, i)).join("");
+    const rowHeight = getHeight(state.rowState, i + 1);
+    rows.push(createRow(cells, i + 1, rowHeight));
   }
   return rows.join("");
 }
