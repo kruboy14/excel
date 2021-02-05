@@ -31,7 +31,6 @@ export class Excel {
 
   render() {
     this.$el.append(this.getRoot());
-    debugger
     this.subscriber.subscribeComponents(this.components)
     this.components.forEach((component) => component.init());
   }
