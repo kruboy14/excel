@@ -46,6 +46,7 @@ export function tableResize($root, event) {
         resolve({
           value,
           id: $parent.data.col,
+          type,
         });
       } else if (type === "row") {
         if(value < 24) { 
@@ -58,6 +59,7 @@ export function tableResize($root, event) {
         resolve({
           value,
           id: $parent.data.row,
+          type,
         });
       }
 

@@ -1,14 +1,8 @@
-import { CHANGE_TEXT, TABLE_RESIZE_COL, TABLE_RESIZE_ROW } from "./types";
+import { CHANGE_TEXT, TABLE_RESIZE } from "./types";
 
-export function tableResizerCOL(data) {
+export function tableResizer(data) {
   return {
-    type: TABLE_RESIZE_COL,
-    data,
-  };
-}
-export function tableResizerROW(data) {
-  return {
-    type: TABLE_RESIZE_ROW,
+    type: TABLE_RESIZE,
     data,
   };
 }

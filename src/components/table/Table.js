@@ -52,10 +52,9 @@ export class Table extends ExcelComponent {
   async resizeTable(event) {
     try {
       const data = await tableResize(this.$root, event);
-      if (event.target.dataset.resize === "col") {
-        this.$dispatch(action.tableResizerCOL(data));
-      } else if (event.target.dataset.resize === "row") {
-        this.$dispatch(action.tableResizerROW(data));
+      console.log(data, "2");
+      if (event.target.dataset.resize === "col" || event.target.dataset.resize === "row") {
+        this.$dispatch(action.tableResizer(data));
       }
     } catch (error) {
       console.warn("resize error", error);
