@@ -1,4 +1,4 @@
-import { CHANGE_TEXT, CURRENT_STYLE, TABLE_RESIZE } from "./types";
+import { CHANGE_TEXT, CHANGE_STYLES, TABLE_RESIZE } from "./types";
 
 export function rootReducer(state, action) {
   switch (action.type) {
@@ -16,8 +16,8 @@ export function rootReducer(state, action) {
       };
     }
 
-    case CURRENT_STYLE: {
-      return {...state}
+    case CHANGE_STYLES: {
+      return {...state, currentStyles: action.data}
     }
     default:
       return state;

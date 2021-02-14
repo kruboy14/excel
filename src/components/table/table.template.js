@@ -1,3 +1,6 @@
+import { defaultStyles } from "../../constants";
+import { camelToDashCase } from "../../core/utils";
+
 const CODES = {
   A: 65,
   Z: 90,
@@ -6,13 +9,15 @@ const CODES = {
 const DEFAULT_WIDTH = 120;
 const DEFAULT_HEIGHT = 24;
 
-
 function toCell(state, row) {
   return function (_, col) {
     const id = `${row}:${col}`;
     const data = state.dataState[id];
+    const styles = Object.keys(defaultStyles)
+      .map((key) => `${camelToDashCase(key)}: ${defaultStyles[key]}`)
+      .join(";");
     return `
-      <div class="excel__table__cell" contenteditable data-col="${col}" data-type="cell" data-id="${id}" style="width: ${getWidth(
+      <div class="excel__table__cell" contenteditable data-col="${col}" data-type="cell" data-id="${id}" style="${styles}; width: ${getWidth(
       state.colState,
       col
     )}">${data || ""}</div>
@@ -56,7 +61,7 @@ function getHeight(state = {}, index) {
 
 function widthAdder(state) {
   return function (value, index) {
-    const width = getWidth(state.colState, index) 
+    const width = getWidth(state.colState, index);
     return {
       value,
       index,
@@ -75,7 +80,6 @@ export function createTable(rowsCount = 20, state = {}) {
     .map(toColumn)
     .join("");
 
-    
   rows.push(createRow(cols, undefined));
 
   for (let i = 0; i < rowsCount; i++) {
