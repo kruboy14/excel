@@ -1,3 +1,5 @@
-export const TABLE_RESIZE_COL = "TABLE_RESIZE_COL"
-export const TABLE_RESIZE_ROW = "TABLE_RESIZE_ROW"
-export const CHANGE_TEXT = "CHANGE_TEXT"
+export const TABLE_RESIZE_COL = "TABLE_RESIZE_COL";
+export const TABLE_RESIZE_ROW = "TABLE_RESIZE_ROW";
+export const CHANGE_TEXT = "CHANGE_TEXT";
+export const APPLY_STYLE = "APPLY_STYLE";
+export const CHANGE_STYLE = "CHANGE_STYLE";

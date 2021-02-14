@@ -96,11 +96,17 @@ class Dom {
     return this;
   }
 
-
   css(styles = {}) {
     for (const [key, value] of Object.entries(styles)) {
       this.$el.style[key] = value;
     }
+  }
+
+  getStyles(styles = []) {
+    return styles.reduce((res, s) => {
+      res[s] = this.$el.style[s];
+      return res;
+    }, {});
   }
 }
 export function $(selector) {

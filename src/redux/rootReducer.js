@@ -18,14 +18,25 @@ export function rootReducer(state, action) {
         rowState: prevState,
       };
     }
+    // case TABLE_RESIZE: {
+    //   field = action.data.type === "col" ? "colState" :
+    // }
 
     case CHANGE_TEXT: {
-      const prevState = state["dataState"] || {};
+      const field = "dataState"; 
+      const prevState = state[field] || {};
       prevState[action.data.id] = action.data.value;
-      return {...state, currentText: action.data.value, dataState: prevState}
+      return {...state, currentText: action.data.value, [field]: prevState}
     }
 
     default:
       return state;
   }
 }
+
+// function val(state, field, action) {
+//   const val = state[field] || {};
+//   val[action.data.id] = action.data.value;
+//   return val;
+  
+// }
