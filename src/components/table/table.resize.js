@@ -55,7 +55,6 @@ export function tableResize($root, event) {
         $parent.css({
           height: value + "px",
         });
-        console.log($parent.data);
         resolve({
           value,
           id: $parent.data.row,
