@@ -1,5 +1,5 @@
 import { defaultStyles } from "../../constants";
-import { camelToDashCase } from "../../core/utils";
+import { toInlineStyles } from "../../core/utils";
 
 const CODES = {
   A: 65,
@@ -13,9 +13,10 @@ function toCell(state, row) {
   return function (_, col) {
     const id = `${row}:${col}`;
     const data = state.dataState[id];
-    const styles = Object.keys(defaultStyles)
-      .map((key) => `${camelToDashCase(key)}: ${defaultStyles[key]}`)
-      .join(";");
+    const styles = toInlineStyles({
+      ...defaultStyles,
+      ...state.stylesState[id],
+    });
     return `
       <div class="excel__table__cell" contenteditable data-col="${col}" data-type="cell" data-id="${id}" style="${styles}; width: ${getWidth(
       state.colState,
