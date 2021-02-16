@@ -4,6 +4,9 @@ import { isCell, matrix, nextSelector, resizeChecker } from "./table.functions";
 import { tableResize } from "./table.resize";
 import { createTable } from "./table.template";
 import { TableSelection } from "./TableSelection";
+import * as action from "../../redux/action";
+import { defaultStyles } from "../../constants";
+import { parse } from "../../core/parse";
 
 export class Table extends ExcelComponent {
   static className = "excel__table";
@@ -17,7 +20,7 @@ export class Table extends ExcelComponent {
   }
 
   toHTML() {
-    return createTable();
+    return createTable(20, this.store.getState());
   }
 
   prepare() {
@@ -26,26 +29,56 @@ export class Table extends ExcelComponent {
 
   init() {
     super.init();
-
     const $cell = this.$root.find(`[data-id="0:0"]`);
     this.selectCell($cell);
 
     this.$on("formula:input", (text) => {
-      this.selection.current.text(text);
+      const attr = this.selection.current.attr("data-value", text);
+      if (typeof attr === "string") {
+        this.updateTextStore(text);
+      } else {
+        attr.text(parse(text));
+        this.updateTextStore(text);
+      }
     });
     this.$on("formula:enter", () => {
       this.selection.current.focus();
+    });
+    this.$on("toolbar:applyStyle", (value) => {
+      this.selection.applyStyle(value);
+      this.$dispatch(
+        action.applyStyle({
+          value,
+          ids: this.selection.seceletedIds,
+        })
+      );
     });
   }
 
   selectCell($cell) {
     this.selection.select($cell);
     this.$emit("table:select", $cell);
+    const styles = $cell.getStyles(Object.keys(defaultStyles));
+    this.$dispatch(action.changeStyles(styles));
+  }
+
+  async resizeTable(event) {
+    try {
+      const data = await tableResize(this.$root, event);
+      if (
+        event.target.dataset.resize === "col" ||
+        event.target.dataset.resize === "row"
+      ) {
+        this.$dispatch(action.tableResizer(data));
+      }
+    } catch (error) {
+      console.warn("resize error", error);
+    }
   }
 
   onMousedown(event) {
     if (resizeChecker(event)) {
-      tableResize(this.$root, event);
+      this.resizeTable(event);
     } else if (isCell(event)) {
       const $target = $(event.target);
       if (event.shiftKey) {
@@ -54,8 +87,7 @@ export class Table extends ExcelComponent {
         );
         this.selection.selectGroup($cells);
       } else {
-        this.selection.select($target);
-        this.$emit("table:select", $target);
+        this.selectCell($target);
       }
     }
   }
@@ -75,11 +107,19 @@ export class Table extends ExcelComponent {
       const { col, row } = this.selection.current.id(true);
       const $next = this.$root.find(nextSelector(key, col, row));
       this.selectCell($next);
-
     }
   }
 
+  updateTextStore(value) {
+    this.$dispatch(
+      action.changeText({
+        value,
+        id: this.selection.current.id(),
+      })
+    );
+  }
+
   onInput(event) {
-    this.$emit("table:input", $(event.target));
+    this.updateTextStore($(event.target).text());
   }
 }

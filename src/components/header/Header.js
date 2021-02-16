@@ -1,4 +1,8 @@
+import { defaultTitle } from "../../constants";
+import { $ } from "../../core/dom";
 import { ExcelComponent } from "../../core/ExcelComponent";
+import { debounce } from "../../core/utils";
+import * as action from "../../redux/action";
 
 export class Header extends ExcelComponent {
   static className = "excel__header";
@@ -6,12 +10,33 @@ export class Header extends ExcelComponent {
   constructor($root, options) {
     super($root, {
       name: "Header",
+      listeners: ["input"],
       ...options,
     });
   }
 
+  prepare() {
+    this.onInput = debounce(this.onInput, 300)
+  }
+
+
+  onInput(event) {
+    const $target = $(event.target);
+    this.$dispatch(action.addTitle($target.text()));
+  }
+
+  onKeydown(event) {
+    const keys = ["Enter", "Tab"];
+    if (keys.includes(event.key)) {
+      event.preventDefault();
+      const $target = $(event.target);
+      this.$dispatch(action.addTitle($target.text()));
+    }
+  }
+
   toHTML() {
-    return `<input type="text" class="input" value="New table" />
+    const title = this.store.getState().title || defaultTitle;
+    return `<input type="text" class="input" value="${title}" />
 
     <div>
       <div class="excel__header__buttons">
