@@ -6,6 +6,7 @@ import { createTable } from "./table.template";
 import { TableSelection } from "./TableSelection";
 import * as action from "../../redux/action";
 import { defaultStyles } from "../../constants";
+import { parse } from "../../core/parse";
 
 export class Table extends ExcelComponent {
   static className = "excel__table";
@@ -32,18 +33,25 @@ export class Table extends ExcelComponent {
     this.selectCell($cell);
 
     this.$on("formula:input", (text) => {
-      this.selection.current.text(text);
-      this.updateTextStore(text);
+      const attr = this.selection.current.attr("data-value", text);
+      if (typeof attr === "string") {
+        this.updateTextStore(text);
+      } else {
+        attr.text(parse(text));
+        this.updateTextStore(text);
+      }
     });
     this.$on("formula:enter", () => {
       this.selection.current.focus();
     });
     this.$on("toolbar:applyStyle", (value) => {
       this.selection.applyStyle(value);
-      this.$dispatch(action.applyStyle({
-        value,
-        ids: this.selection.seceletedIds
-      }))
+      this.$dispatch(
+        action.applyStyle({
+          value,
+          ids: this.selection.seceletedIds,
+        })
+      );
     });
   }
 
@@ -57,8 +65,10 @@ export class Table extends ExcelComponent {
   async resizeTable(event) {
     try {
       const data = await tableResize(this.$root, event);
-      console.log(data, "2");
-      if (event.target.dataset.resize === "col" || event.target.dataset.resize === "row") {
+      if (
+        event.target.dataset.resize === "col" ||
+        event.target.dataset.resize === "row"
+      ) {
         this.$dispatch(action.tableResizer(data));
       }
     } catch (error) {

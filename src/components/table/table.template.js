@@ -1,4 +1,5 @@
 import { defaultStyles } from "../../constants";
+import { parse } from "../../core/parse";
 import { toInlineStyles } from "../../core/utils";
 
 const CODES = {
@@ -18,10 +19,10 @@ function toCell(state, row) {
       ...state.stylesState[id],
     });
     return `
-      <div class="excel__table__cell" contenteditable data-col="${col}" data-type="cell" data-id="${id}" style="${styles}; width: ${getWidth(
+      <div class="excel__table__cell" contenteditable data-col="${col}" data-type="cell" data-id="${id}" data-value="${data || ""}" style="${styles}; width: ${getWidth(
       state.colState,
       col
-    )}">${data || ""}</div>
+    )}">${parse(data) || ""}</div>
   `;
   };
 }
