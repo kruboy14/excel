@@ -1,4 +1,4 @@
-import { CHANGE_TEXT, CHANGE_STYLES, TABLE_RESIZE } from "./types";
+import { CHANGE_TEXT, CHANGE_STYLES, TABLE_RESIZE, APPLY_STYLE, ADD_HEADER } from "./types";
 
 export function tableResizer(data) {
   return {
@@ -19,4 +19,18 @@ export function changeStyles(data) {
     type: CHANGE_STYLES,
     data,
   };
+}
+
+export function applyStyle(data) {
+  return {
+    type: APPLY_STYLE,
+    data
+  }
+}
+
+export function addTitle(data) {
+  return {
+    type: ADD_HEADER,
+    data
+  }
 }

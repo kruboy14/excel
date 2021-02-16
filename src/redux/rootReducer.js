@@ -1,4 +1,4 @@
-import { CHANGE_TEXT, CHANGE_STYLES, TABLE_RESIZE } from "./types";
+import { CHANGE_TEXT, CHANGE_STYLES, TABLE_RESIZE, APPLY_STYLE, ADD_HEADER } from "./types";
 
 export function rootReducer(state, action) {
   switch (action.type) {
@@ -17,8 +17,26 @@ export function rootReducer(state, action) {
     }
 
     case CHANGE_STYLES: {
-      return {...state, currentStyles: action.data}
+      return { ...state, currentStyles: action.data };
     }
+
+    case APPLY_STYLE: {
+      const field = "stylesState";
+      const value = state[field] || {};
+      action.data.ids.forEach((id) => {
+        value[id] = { ...value[id], ...action.data.value };
+      });
+      return {
+        ...state,
+        [field]: value,
+        currentStyles: { ...state.currentStyles, ...action.data.value },
+      };
+    }
+
+    case ADD_HEADER: {
+      return {...state, title: action.data}
+    }
+
     default:
       return state;
   }
