@@ -11,6 +11,7 @@ const DEFAULT_WIDTH = 120;
 const DEFAULT_HEIGHT = 24;
 
 function toCell(state, row) {
+  console.log(state);
   return function (_, col) {
     const id = `${row}:${col}`;
     const data = state.dataState[id];
