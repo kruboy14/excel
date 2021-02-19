@@ -15,7 +15,7 @@ class Dom {
   }
 
   text(text) {
-    if (typeof text === "number") {
+    if (typeof text === "number" || typeof text === "string") {
       this.$el.textContent = text;
       return this;
     }
@@ -71,6 +71,10 @@ class Dom {
       };
     }
     return this.data.id;
+  }
+
+  getClass() {
+    return this.$el.classList;
   }
 
   focus() {

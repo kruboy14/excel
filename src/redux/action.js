@@ -1,4 +1,11 @@
-import { CHANGE_TEXT, CHANGE_STYLES, TABLE_RESIZE, APPLY_STYLE, ADD_HEADER } from "./types";
+import {
+  CHANGE_TEXT,
+  CHANGE_STYLES,
+  TABLE_RESIZE,
+  APPLY_STYLE,
+  ADD_HEADER,
+  UPDATE_DATE,
+} from "./types";
 
 export function tableResizer(data) {
   return {
@@ -24,13 +31,19 @@ export function changeStyles(data) {
 export function applyStyle(data) {
   return {
     type: APPLY_STYLE,
-    data
-  }
+    data,
+  };
 }
 
 export function addTitle(data) {
   return {
     type: ADD_HEADER,
-    data
-  }
+    data,
+  };
+}
+
+export function updateDate() {
+  return {
+    type: UPDATE_DATE,
+  };
 }
