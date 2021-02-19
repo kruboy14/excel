@@ -73,6 +73,10 @@ class Dom {
     return this.data.id;
   }
 
+  getClass() {
+    return this.$el.classList;
+  }
+
   focus() {
     this.$el.focus();
     return this;

@@ -1,8 +1,15 @@
-export function toHtml() {
+
+import { storage } from "../core/utils";
+
+export function toHtml(key) {
+  const model = storage(key);
+  const id = key.split(":")[1];
   return `
   <li class="db__record">
-              <a href="#">Table nubmer 1</a>
-              <strong>12.12.1212</strong>
+              <a href="#excel/${id}">${model.title}</a>
+              <strong>${new Date(model.openDate).toLocaleDateString()}
+                      ${new Date(model.openDate).toLocaleTimeString()}
+              </strong>
             </li>
             
   `;
