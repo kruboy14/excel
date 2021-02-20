@@ -7,7 +7,9 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "start": "cross-env NODE_ENV=development webpack serve --open",
-    "build": "cross-env NODE_ENV=production webpack --mode production"
+    "build": "cross-env NODE_ENV=production webpack --mode production",
+    "deploy": "gh-pages -d dist",
+    "predebloy": "npm run dist"
   },
   "repository": {
     "type": "git",
@@ -18,8 +20,8 @@
   "bugs": {
     "url": "https://github.com/kruboy14/excel/issues"
   },
-  "homepage": "https://github.com/kruboy14/excel#readme",
   "private": true,
+  "homepage": "https://kruboy14.github.io/excel/",
   "devDependencies": {
     "@babel/core": "^7.12.10",
     "@babel/plugin-proposal-class-properties": "^7.12.1",
