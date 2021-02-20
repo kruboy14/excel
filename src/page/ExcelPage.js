@@ -3,7 +3,7 @@ import { Formula } from "../components/formula/Formula";
 import { Header } from "../components/header/Header";
 import { Table } from "../components/table/Table";
 import { Toolbar } from "../components/toolbar/Toolbar";
-import { createStore } from "../core/createStore";
+import { createStore } from "../core/store/createStore";
 import { Page } from "../core/Page";
 import { debounce, storage } from "../core/utils";
 import { normalizeInitState } from "../redux/initialState";
@@ -23,7 +23,6 @@ export class ExcelPage extends Page {
     }, 300);
 
     store.subscribe(stateListener);
-
     this.excel = new Excel({
       components: [Header, Toolbar, Formula, Table],
       store,
